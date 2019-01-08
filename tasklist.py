@@ -3,6 +3,7 @@ import sqlite3
 import numpy as np
 from util import prettyprint
 from util import list_to_sql_params
+from util import parse_date
 
 from tabulate import tabulate
 pd.set_option('display.max_columns', None)
@@ -42,17 +43,18 @@ class taskList(object):
                 ''', self.connection)
 
         prettyprint(df)
+        #concept code for checking due date
+        df['due_list'] = df['due'].apply(lambda x: parse_date(x) <=  parse_date('tomorrow'))
+        prettyprint(df)
 
 
     def list_only_tags(self, taglist=None):
         df = pd.read_sql_query(f"SELECT * FROM {TABLE}", self.connection)
         df.replace(np.nan, "", inplace=True)
-        df['alltags'] = df['tag1'].astype(str) + df['tag2'].astype(str) + df['tag3'].astype(str) + df['tag4'].astype(str) + df['tag5'].astype(str) + df['tag6'].astype(str) 
+        df['alltags'] = df['tag1'].astype(str) + '_' + df['tag2'].astype(str) + '_'  + df['tag3'].astype(str) + '_' + df['tag4'].astype(str) + '_' + df['tag5'].astype(str) + '_' + df['tag6'].astype(str) 
         for tag in taglist:
             df = df[df['alltags'].str.contains(tag)]
         prettyprint(df)
-        #print(df.tag3.dtype)
-        #prettyprint(df[df['alltags'].str.contains('hard') |  df['alltags'].str.contains('mall')])
 
 
 #unit test
@@ -69,20 +71,3 @@ mainlist.list_only_tags(taglist = ['hard','easy'])
 #mainlist.view_all()
 #mainlist.add(title = 'buy razors', due='1/1/19', date_added='30/12/18', date_completed= '12/12/12/', tag1 = 'easy', tag2 = 'supermarket')
 #mainlist.view_all()
-##con = sqlite3.connect('taskyData.db')
-#
-##values = {'title':"buy some milk", 'due':'1/12/19','date_added':'1/1/19','date_completed':"2/1/19",'tag1':'easy','tag2':'mall','tag3':'urgent'}
-##columns = ', '.join(values.keys())
-##placeholders = ', '.join('?' * len(values))
-##sql = 'INSERT INTO {table} ({}) VALUES ({})'.format(columns, placeholders, table = 'tasky')
-#
-#print(sql)
-#print(values.values())
-##with con as cur:
-##    cur.execute(sql, list(values.values()))
-#
-#df = pd.read_sql_query("SELECT * FROM tasky", con)
-#print(df.iloc[:,:4])
-#
-#print(tabulate(df, headers='keys', tablefmt='psql'))
-#print(tabulate(df.iloc[:,:4], headers='keys', tablefmt='psql'))
