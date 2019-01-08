@@ -48,8 +48,11 @@ class taskList(object):
         df = pd.read_sql_query(f"SELECT * FROM {TABLE}", self.connection)
         df.replace(np.nan, "", inplace=True)
         df['alltags'] = df['tag1'].astype(str) + df['tag2'].astype(str) + df['tag3'].astype(str) + df['tag4'].astype(str) + df['tag5'].astype(str) + df['tag6'].astype(str) 
-        print(df.tag3.dtype)
-        prettyprint(df[df['alltags'].str.contains('hard') |  df['alltags'].str.contains('mall')])
+        for tag in taglist:
+            df = df[df['alltags'].str.contains(tag)]
+        prettyprint(df)
+        #print(df.tag3.dtype)
+        #prettyprint(df[df['alltags'].str.contains('hard') |  df['alltags'].str.contains('mall')])
 
 
 #unit test
@@ -58,7 +61,9 @@ mainlist.view_all()
 mainlist.list_all_tags(taglist=['easy', 'hard'])
 mainlist.list_all_tags(taglist=['hard'])
 mainlist.list_all_tags(taglist=['mall'])
-mainlist.list_only_tags()
+mainlist.list_only_tags(taglist = ['easy','mall'])
+mainlist.list_only_tags(taglist = ['hard','laptop'])
+mainlist.list_only_tags(taglist = ['hard','easy'])
 
 #mainlist.add(title = 'write project report', due='1/1/19', date_added='30/12/18', date_completed= '12/12/12/', tag1 = 'hard', tag2 = 'time consuming', tag3 = 'laptop')
 #mainlist.view_all()
