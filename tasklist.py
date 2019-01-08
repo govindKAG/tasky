@@ -49,7 +49,7 @@ class taskList(object):
         df.replace(np.nan, "", inplace=True)
         df['alltags'] = df['tag1'].astype(str) + df['tag2'].astype(str) + df['tag3'].astype(str) + df['tag4'].astype(str) + df['tag5'].astype(str) + df['tag6'].astype(str) 
         print(df.tag3.dtype)
-        prettyprint(df)
+        prettyprint(df[df['alltags'].str.contains('hard') |  df['alltags'].str.contains('mall')])
 
 
 #unit test
