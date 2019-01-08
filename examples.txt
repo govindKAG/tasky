@@ -1,0 +1,15 @@
+tasky add task goes here -t tag1 tag2 tag3 due in 2 days
+tasky add second task (default to 'misc' as tag and no due date)
+tasky add third task due tomorrow 
+
+
+tasky list any easy laptop
+tasky list any easy limit 5 
+tasky list only mall hard
+tasky list any due tomorrow
+tasky list any easy due december 10
+tasky list
+
+tasky do <id>
+tasky undo <id>
+
