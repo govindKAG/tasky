@@ -4,6 +4,7 @@ import numpy as np
 from util import prettyprint
 from util import list_to_sql_params
 from util import parse_date
+from util import filter_due_date
 
 from tabulate import tabulate
 pd.set_option('display.max_columns', None)
@@ -30,7 +31,7 @@ class taskList(object):
         prettyprint(df)
 
 
-    def list_all_tags(self, taglist=None):
+    def list_all_tags(self, taglist=None, due=None):
         taglist = list_to_sql_params(taglist)
 
         df = pd.read_sql_query( f'''SELECT * FROM {TABLE} WHERE  
@@ -44,8 +45,8 @@ class taskList(object):
 
         prettyprint(df)
         #concept code for checking due date
-        df['due_list'] = df['due'].apply(lambda x: parse_date(x) <=  parse_date('tomorrow'))
-        prettyprint(df)
+        #df['due_list'] = df['due'].apply(lambda x: parse_date(x) <=  parse_date('tomorrow'))
+        prettyprint(filter_due_date(df, 'tomorrow'))
 
 
     def list_only_tags(self, taglist=None):
@@ -53,7 +54,7 @@ class taskList(object):
         df.replace(np.nan, "", inplace=True)
         df['alltags'] = df['tag1'].astype(str) + '_' + df['tag2'].astype(str) + '_'  + df['tag3'].astype(str) + '_' + df['tag4'].astype(str) + '_' + df['tag5'].astype(str) + '_' + df['tag6'].astype(str) 
         for tag in taglist:
-            df = df[df['alltags'].str.contains(tag)]
+            df = df[df['alltags'].str.contains(tag)] #add exit condition here
         prettyprint(df)
 
 
