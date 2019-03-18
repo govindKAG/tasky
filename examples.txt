@@ -9,6 +9,7 @@ tasky list only mall hard
 tasky list any due tomorrow
 tasky list any easy due december 10
 tasky list
+tasky list due 1/2/3
 
 tasky do <id>
 tasky undo <id>
