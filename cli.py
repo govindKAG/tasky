@@ -10,9 +10,10 @@ arguments = sys.argv[1:]
 
 print(arguments)
 
+# testing dateparser
 if DUE in arguments:
     due_index = arguments.index(DUE)
-    due_date  = ' '.join(arguments[due_index + 1:])
+    due_date = ' '.join(arguments[due_index + 1:])
     arguments = arguments[:due_index]
 
 print(due_date)
